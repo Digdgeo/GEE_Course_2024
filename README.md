@@ -22,5 +22,22 @@ Recopilando y siendo optimistas, hemos visto:
 
 ## Día 2
 
-Objetivo: Repaso día anterior (DTM y NDVI), comenzar viendo operaciones con shape de Andalucía, ver como exportar tablas, shapes e imágenes; máscaras; trabajo con colecciones de imágenes, scripts sentinel 1 barcos, Sentinel 2 nubes UI, Sentinel 2 clasificación. 
+Finalmente fuimos lentos pero seguros e hicimos el repado de las cosas fundamentales vistas el día anterior, además y como punto fuerte, 
+hemos visto como usar los reductores en las colecciones de imágenes. En la misma línea, hemos estado viendo como usar funciones y mapearlas a una colección de imágenes. 
+
+Por último, tras un mini debate, acordamos que vamos a pasar los scritps más o menos terminados, para ir avanzando más rápido. La idea es que eso nos permita comentarlos sin perder 
+el tiempo escribiendo (yo no estoy muy seguro de que sea la mejor opción, pero es la que se ha elegido por consenso). 
+
+Para acabar, hicimos una prueba de pasar y ejecutar/comentar el código de las composiciones estacionales de NDVI y creo que más o menos fue bien. 
+Por cierto, también hay productos estacionales de NDWI... 😳😳😳
+
+
+![dia 2](https://i.imgur.com/h9CpJAo.jpeg)
+
+## Día 3
+
+Objetivo: Ver los scripts que nos quedan por ver (MNDWI Santa Olalla, Sentinel 1 ships, Sentinel 2 clouds, Sentinel 2 classification) y, siempre 
+que quede tiempo, pasar al enetorno de Python y ver al menos la introducción a Google Colab.
+
+
 
