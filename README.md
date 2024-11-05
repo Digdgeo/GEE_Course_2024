@@ -41,3 +41,4 @@ que quede tiempo, pasar al enetorno de Python y ver al menos la introducción a 
 
 
 
+![dia 3](https://i.imgur.com/yNT5KMI.jpeg)
