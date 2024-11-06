@@ -36,9 +36,14 @@ Por cierto, también hay productos estacionales de NDWI... 😳😳😳
 
 ## Día 3
 
-Objetivo: Ver los scripts que nos quedan por ver (MNDWI Santa Olalla, Sentinel 1 ships, Sentinel 2 clouds, Sentinel 2 classification) y, siempre 
-que quede tiempo, pasar al enetorno de Python y ver al menos la introducción a Google Colab.
-
+Más o menos hemos acabado con la parte de javascrip. Empezamos viendo un script con datos *censurados* y datos del Global Fishing Watch
+para ver como cruzar datos puntuales con datos raster. Continuamos trabajando con series temporales y reductores con Landsat, viendo la evolución en la inundación por periodos de la laguna de Santa Olalla. Y acabmos viendo el script para observqar el tráfico marítimo con Sentinel 1 (por fin! 😊).
 
 
 ![dia 3](https://i.imgur.com/yNT5KMI.jpeg)
+
+
+## Día 4
+
+Objetivo: Ver (solo ver) la clasificación con Sentinel 2 y un ejemplo de script usando UI. Después nos moveremos al entorno de Python y comenzaremos una breve introducción a Python desde Google Colab. LA idea es empezar a trabajr con Geemap y la API de python de GEE.
+

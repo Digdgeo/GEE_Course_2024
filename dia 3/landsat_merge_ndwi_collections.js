@@ -1,5 +1,3 @@
-//imports
-
 // Definir el rango de fechas y la región de interés
 var fechaInicio = '1984-01-01';
 var fechaFin = '2023-12-31';
@@ -11,25 +9,29 @@ function seleccionarBandasColeccion(imagen, satelite) {
   if (satelite === 'L5') {
     bandasOriginales = ['SR_B1', 'SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B7']; // Azul, Verde, Rojo, NIR, SWIR1, SWIR2
     bandasRenombradas = ['blue', 'green', 'red', 'nir', 'swir1', 'swir2'];
-  } else if () {} 
-  else {}
+  } else if (satelite === 'L7') {
+    bandasOriginales = ['SR_B1', 'SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B7'];
+    bandasRenombradas = ['blue', 'green', 'red', 'nir', 'swir1', 'swir2'];
+  } else {
+    bandasOriginales = ['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7']; // Cambios en bandas para Landsat 8 y 9
+    bandasRenombradas = ['blue', 'green', 'red', 'nir', 'swir1', 'swir2'];
+  }
   return imagen.select(bandasOriginales, bandasRenombradas);
 }
 
 // Función para recortar una imagen con la geometría
 function recortarImagen(imagen) {
-  return ****;
+  return imagen.clip(geometriaRecorte);
 }
 
-//var crs = 'EPSG:32629'
-
+var crs = 'EPSG:32629'
 // Función para calcular el MNDWI y devolver solo esa banda
 function calcularMNDWI(imagen) {
   // Calcular MNDWI usando las bandas renombradas ('green' y 'swir1')
-  var mndwi = *****;
+  var mndwi = imagen.normalizedDifference(['green', 'swir1']).rename('MNDWI');
   
   // Recortar, seleccionar y devolver solo la banda MNDWI
-  return mndwi.clip(extent).select('MNDWI')//.reproject({crs: crs, scale: 30});
+  return mndwi.clip(extent).select('MNDWI').reproject({crs: crs, scale: 30});
 }
 
 
@@ -40,11 +42,23 @@ var landsat5 = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
                 .filter(ee.Filter.lt('CLOUD_COVER', 20)) 
                 .map(function(img) { return seleccionarBandasColeccion(img, 'L5').clip(extent); });
 
-var landsat7 = ***
+var landsat7 = ee.ImageCollection('LANDSAT/LE07/C02/T1_L2')
+                .filterDate(fechaInicio, fechaFin)
+                .filterBounds(region)
+                .filter(ee.Filter.lt('CLOUD_COVER', 20)) 
+                .map(function(img) { return seleccionarBandasColeccion(img, 'L7').clip(extent); });
 
-var landsat8 = ***
+var landsat8 = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+                .filterDate(fechaInicio, fechaFin)
+                .filterBounds(region)
+                .filter(ee.Filter.lt('CLOUD_COVER', 20)) 
+                .map(function(img) { return seleccionarBandasColeccion(img, 'L8').clip(extent); });
 
-var landsat9 = ***
+var landsat9 = ee.ImageCollection('LANDSAT/LC09/C02/T1_L2')
+                .filterDate(fechaInicio, fechaFin)
+                .filterBounds(region)
+                .filter(ee.Filter.lt('CLOUD_COVER', 20)) 
+                .map(function(img) { return seleccionarBandasColeccion(img, 'L9').clip(extent); });
 
 // Combinar todas las colecciones en un solo conjunto de datos
 var landsatCombinado = landsat5.merge(landsat7).merge(landsat8).merge(landsat9);
@@ -59,7 +73,7 @@ print("Colección combinada Landsat:", landsatCombinado);
 // Función para aplicar los coeficientes específicos de calibración
 function aplicarCoeficientesReflectividad(imagen) {
   // Aplicar los coeficientes de multiplicación y suma a cada banda
-  return ******.copyProperties(imagen, imagen.propertyNames());
+  return imagen.multiply(0.0000275).add(-0.2).copyProperties(imagen, imagen.propertyNames());
 }
 
 // Aplicar la función a la colección combinada
@@ -78,23 +92,23 @@ var periodo_2004_2014 = landsatCombinadoReflectividad.filterDate('2004-09-01', '
 var periodo_2014_2024 = landsatCombinadoReflectividad.filterDate('2014-09-01', '2024-10-31');
 
 // Aplicar el cálculo de MNDWI y obtener la mediana de cada período
-var mndwi_1984_1994 = *****;
-//var mndwi_1994_2004 = *****;
-//var mndwi_2004_2014 = *****;
-//var mndwi_2014_2024 = *****;
+var mndwi_1984_1994 = periodo_1984_1994.map(calcularMNDWI).median();
+var mndwi_1994_2004 = periodo_1994_2004.map(calcularMNDWI).median();
+var mndwi_2004_2014 = periodo_2004_2014.map(calcularMNDWI).median();
+var mndwi_2014_2024 = periodo_2014_2024.map(calcularMNDWI).median();
 
 // Visualizar cada período en el mapa
 Map.centerObject(extent);
-//Map.addLayer(mndwi_1984_1994, {min: -1, max: 1, palette: ['white', 'blue']}, 'MNDWI Periodo 1984-1994');
-//Map.addLayer(mndwi_1994_2004, {min: -1, max: 1, palette: ['white', 'blue']}, 'MNDWI Periodo 1994-2004');
-//Map.addLayer(mndwi_2004_2014, {min: -1, max: 1, palette: ['white', 'blue']}, 'MNDWI Periodo 2004-2014');
-//Map.addLayer(mndwi_2014_2024, {min: -1, max: 1, palette: ['white', 'blue']}, 'MNDWI Periodo 2014-2024');
+Map.addLayer(mndwi_1984_1994, {min: -1, max: 1, palette: ['white', 'blue']}, 'MNDWI Periodo 1984-1994');
+Map.addLayer(mndwi_1994_2004, {min: -1, max: 1, palette: ['white', 'blue']}, 'MNDWI Periodo 1994-2004');
+Map.addLayer(mndwi_2004_2014, {min: -1, max: 1, palette: ['white', 'blue']}, 'MNDWI Periodo 2004-2014');
+Map.addLayer(mndwi_2014_2024, {min: -1, max: 1, palette: ['white', 'blue']}, 'MNDWI Periodo 2014-2024');
 
 //Map.addLayer(periodo_1984_1994.median(), {min: 0.1, max: 0.6, bands: ['swir1', 'nir', 'blue']}, 'Periodo 1984-1994');
 //Map.addLayer(periodo_2014_2024.median(), {min: 0.1, max: 0.6, bands: ['swir1', 'nir', 'blue']}, 'periodo_2014_2024');
 
 
-// Exportar MNDWI a los assetpara el período 1984-1994
+// Exportar MNDWI para el período 1984-1994
 Export.image.toAsset({
   image: mndwi_1984_1994,
   description: 'Exportar_MNDWI_Periodo_1984_1994_median',

@@ -14,7 +14,7 @@ Map.addLayer(mndwi_2004_2014, vizParams, 'MNDWI 2004-2014');
 Map.addLayer(mndwi_2014_2024, vizParams, 'MNDWI 2014-2024');
 
 // Centrar el mapa en tu área de interés
-*****************
+Map.centerObject(mndwi_1984_1994, 6);
 
 // Función para recortar, aplicar umbral y calcular área de agua
 function calcularSuperficieAgua(imagen, nombrePeriodo) {
@@ -22,11 +22,11 @@ function calcularSuperficieAgua(imagen, nombrePeriodo) {
   var recortada = imagen.clip(extent);
 
   // Crear una máscara de agua (donde MNDWI >= 0)
-  var mascaraAgua = recortada//***;
+  var mascaraAgua = recortada.gte(0);
 
   // Calcular el área de agua en metros cuadrados
   var areaAgua = mascaraAgua.multiply(ee.Image.pixelArea()).reduceRegion({
-    reducer: ee.Reducer****,
+    reducer: ee.Reducer.sum(),
     geometry: extent,
     scale: 30,
     maxPixels: 1e13
@@ -41,7 +41,6 @@ function calcularSuperficieAgua(imagen, nombrePeriodo) {
   // Devolver la imagen recortada con la máscara de agua aplicada
   return recortada.updateMask(mascaraAgua);
 }
-
 
 // Calcular la superficie de agua para cada período
 var agua_1984_1994 = calcularSuperficieAgua(mndwi_1984_1994, '1984-1994');
@@ -62,7 +61,7 @@ Map.centerObject(extent, 8);
 // Función para calcular la superficie de agua y convertirla en polígonos
 function poligonizarAgua(imagen, nombrePeriodo) {
   // Crear una máscara de agua (donde MNDWI >= 0) y recortar
-  var mascaraAgua = imagen.clip(//*****).****);
+  var mascaraAgua = imagen.clip(extent).gte(0);
 
   // Convertir las áreas de agua a polígonos
   var aguaPoligonos = mascaraAgua.selfMask().reduceToVectors({
@@ -77,11 +76,11 @@ function poligonizarAgua(imagen, nombrePeriodo) {
 
   // Renombrar la propiedad para identificar el período
   aguaPoligonos = aguaPoligonos.map(function(feature) {
-    return feature.set('Periodo', *****);
+    return feature.set('Periodo', nombrePeriodo);
   });
 
   // Visualizar los polígonos en el mapa
-  ******;
+  Map.addLayer(aguaPoligonos, {color: 'blue'}, 'Cuerpos de Agua ' + nombrePeriodo);
   
   // Retornar el resultado
   return aguaPoligonos;
@@ -99,5 +98,10 @@ Map.centerObject(extent, 8);
 
 // Exportar los polígonos de agua de cada período a Google Drive
 Export.table.toDrive({
-  ****
+  collection: aguaPoligonos_1984_1994,
+  description: 'Poligonos_Agua_1984_1994',
+  folder: 'GEE_CSIC_2024',  // Opcional: nombre de la carpeta en Google Drive
+  fileNamePrefix: 'Cuerpos_Agua_1984_1994', // Prefijo del nombre del archivo
+  fileFormat: 'SHP'  // Puedes cambiar a 'GeoJSON' si lo prefieres
 });
+

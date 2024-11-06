@@ -1,36 +1,28 @@
 
-//-------------------------
-//imports??
-//-------------------------
-
-//usamos la librería recomendada por Manuel para importar colorbars
 var palettes = require('users/gena/packages:palettes');
 var palette = palettes.matplotlib.viridis[7];
 
-//recortamos los puntos con la geometría
-var seaP = seaPts//.*********(geometry);
+//clip a los puntos
+var seaP = seaPts.filterBounds(geometry);
 print(seaP.size())
 
-//dataset Global Fishing Water
+
 var dataset = ee.ImageCollection('GFW/GFF/V1/vessel_hours')
                   .filter(ee.Filter.date('2016-06-01', '2016-06-30'));
-//Seleccioanmos la variable de interes
-var oth_fishing = dataset.select('******');
-//Nos quedamos con el estadistico de interes
-var suma_oth_fishing = oth_fishing//*********/
+var oth_fishing = dataset.select('purse_seines');
+var suma_oth_fishing = oth_fishing.reduce(ee.Reducer.sum()).clip(geometry)
 
-//diccionario para la visualizacion
 var imgVis = {
   min: 0.0,
   max: 5.0,
-  palette: ******
+  palette: palette
 };
 
 // Cargar un conjunto de datos de masas terrestres para enmascarar la tierra
 var landMask = ee.Image('MODIS/MOD44W/MOD44W_005_2000_02_24').select('water_mask');
 
 // Aplicar la máscara de tierra a los datos de barcos
-var suma_oth_fishing_msk = suma_oth_fishing//.********
+var suma_oth_fishing_msk = suma_oth_fishing.updateMask(landMask);
 
 // Centrar el mapa y agregar capas
 Map.centerObject(geometry);
@@ -47,9 +39,18 @@ var sampledPoints = suma_oth_fishing_msk.sample({
 // Imprimir los puntos con los valores extraídos
 print('Valores de pesca en puntos de interés (usando sample)', sampledPoints.limit(10));
 
+/*
+Con reduce regions
+// Ajustar el tamaño de los píxeles manualmente a 1 km (1000 metros)
+var sampledPointsWithReduceRegions = oceanOnlyTrawlers.reduceRegions({
+  collection: seaPts,  
+  reducer: ee.Reducer.mean(), 
+  scale: 1000,  // Escala ajustada a 1 km
+});
+*/
 
 // Exportar la colección de puntos como tabla CSV, especificando los campos que deseas incluir
-//****************({
+Export.table.toDrive({
   collection: sampledPoints,
   description: 'FishingValuesExport',
   fileFormat: 'CSV',
