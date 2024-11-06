@@ -45,5 +45,6 @@ para ver como cruzar datos puntuales con datos raster. Continuamos trabajando co
 
 ## Día 4
 
-Objetivo: Ver (solo ver) la clasificación con Sentinel 2 y un ejemplo de script usando UI. Después nos moveremos al entorno de Python y comenzaremos una breve introducción a Python desde Google Colab. LA idea es empezar a trabajr con Geemap y la API de python de GEE.
+Objetivo: Ver (solo ver) la clasificación con Sentinel 2 y un ejemplo de script usando UI. Después nos moveremos al entorno de Python y comenzaremos una breve introducción a Python desde Google Colab. La idea es empezar a trabajar con Geemap y la API de python de GEE.
 
+![dia 4](https://i.imgur.com/4HIkQ6C.jpeg)
