@@ -45,6 +45,21 @@ para ver como cruzar datos puntuales con datos raster. Continuamos trabajando co
 
 ## Día 4
 
-Objetivo: Ver (solo ver) la clasificación con Sentinel 2 y un ejemplo de script usando UI. Después nos moveremos al entorno de Python y comenzaremos una breve introducción a Python desde Google Colab. La idea es empezar a trabajar con Geemap y la API de python de GEE.
+Hemos estado viendo, muy por encima, la clasificación de una Sentinel 2 y un ejemplo de como actuar sobre el objeto mapa con
+una comparativa de máscaras de nubes en la que dividimos el panel de mapas en 4 elementos *linkeados*. También vios muy brevemente un ejemplo de mini app con máscaras de inundación de la marisma y 
+un ejemplo aplicando el script de *seasonality* para caracterizar cada pixel con datos derivados de la curva harmónica de una serie de vegetación, que usamos
+para ver el decaimiento de los pinares en el Espacio Natural de Doñana.
+
+Luego pasamos ya a la mini introducción a Python y a ver el entorno de Google Colab. Por último, estuvimos trabajando con la increíblemente 
+maravillosa librería de python Ndvi2Gif 😉, con la que vimos como trabajar con las composiciones de índices multi-estacinales como los que estuvimos viendo el día anterior 
+desde el code-editor.
+
 
 ![dia 4](https://i.imgur.com/4HIkQ6C.jpeg)
+
+
+## Día 5
+
+Objetivo: Seguir con Geemap todo el día y que el curso acabe bien 🚀
+
+![dia5](https://i.imgur.com/phVnkAl.jpeg)
