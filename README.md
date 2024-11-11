@@ -2,6 +2,10 @@
 
 Repositorio con el curso del Gabinete de Formación del CSIC de Google Earth Engine 2024. 
 
+Enlace a la presentación (pinchar en la imagen):
+[![presentacion](https://i.imgur.com/OHeV2jn.png)](https://slides.com/diegogarciadiaz/google-earth-engine/fullscreen)
+
+
 ## Día 1
 
 Lo mejor, la presentación de los alumnos. Luego, mal que bien, hemos hecho una introducción al "ecosistema" de GEE. Hemos creado las cuentas de usuario, hemos visto algunos ejemplos de *time lapses*, donde buscar documentación de la API y hemos estado trabajando un poco con el [Earth Explorer](https://explorer.earthengine.google.com/#workspace) y viendo uns scripts básicos de introducción a javascript en el code editor. 
